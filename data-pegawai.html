@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Pegawai</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #333; padding: 8px 12px; text-align: left; }
+    thead { background: #2c3e50; color: #fff; }
+    tfoot { background: #ecf0f1; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Data Pegawai</h2>
+  <div id="output"></div>
+
+  <script>
+    // Data yang diketahui
+    const nama    = "Dodi Prayodi";
+    const umur    = 25;
+    const jabatan = "Manajer";
+    const status  = "Menikah";
+
+    // Gaji Pokok (if)
+    let gapok = 0;
+    if (jabatan === "Manajer") {
+      gapok = 15000000;
+    } else if (jabatan === "Asisten Manajer") {
+      gapok = 10000000;
+    } else if (jabatan === "Staff") {
+      gapok = 5000000;
+    }
+
+    // Tunjangan & BPJS
+    const tunjanganJabatan = gapok * 0.15;
+    const bpjs = gapok * 0.10;
+    // Tunjangan Keluarga (ternary)
+    const tunjanganKeluarga = (status === "Menikah") ? gapok * 0.20 : 0;
+
+    // Total Gaji
+    const totalGaji = gapok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+
+    // Format Rupiah
+    const rp = (angka) => "Rp " + angka.toLocaleString("id-ID");
+
+    // Cetak tabel
+    document.getElementById("output").innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Pegawai</th>
+            <th>Umur</th>
+            <th>Jabatan</th>
+            <th>Status</th>
+            <th>Gaji Pokok</th>
+            <th>Tunjangan Jabatan (15%)</th>
+            <th>BPJS (10%)</th>
+            <th>Tunjangan Keluarga (20%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${nama}</td>
+            <td>${umur} tahun</td>
+            <td>${jabatan}</td>
+            <td>${status}</td>
+            <td>${rp(gapok)}</td>
+            <td>${rp(tunjanganJabatan)}</td>
+            <td>${rp(bpjs)}</td>
+            <td>${rp(tunjanganKeluarga)}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7">Total Gaji</td>
+            <td>${rp(totalGaji)}</td>
+          </tr>
+        </tfoot>
+      </table>
+    `;
+  </script>
+</body>
+</html>
