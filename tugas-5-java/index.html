@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #btnTambah {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .hapus {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .produk {
+            background-color: #f8f9fa;
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Manajemen Produk Toko Online</h1>
+
+    <h3>Tambah Produk</h3>
+
+    <input type="text" id="namaProduk" placeholder="Nama Produk">
+    <input type="number" id="hargaProduk" placeholder="Harga Produk">
+
+    <button id="btnTambah">Tambah Produk</button>
+
+    <h3>Daftar Produk</h3>
+
+    <div id="daftarProduk"></div>
+
+</div>
+
+<script>
+
+    // ==========================================
+    // 1. DATA PRODUK AWAL
+    // ==========================================
+
+    let produk = [
+        {
+            id: 1,
+            nama: "Laptop",
+            harga: 7500000
+        },
+        {
+            id: 2,
+            nama: "Mouse Wireless",
+            harga: 150000
+        },
+        {
+            id: 3,
+            nama: "Keyboard Mechanical",
+            harga: 450000
+        },
+        {
+            id: 4,
+            nama: "Headset Gaming",
+            harga: 350000
+        },
+        {
+            id: 5,
+            nama: "Webcam",
+            harga: 500000
+        }
+    ];
+
+
+    // ==========================================
+    // 2. MENAMPILKAN SEMUA PRODUK
+    // ==========================================
+
+    function tampilkanProduk(...dataProduk) {
+
+        const daftarProduk = document.getElementById("daftarProduk");
+
+        daftarProduk.innerHTML = "";
+
+        dataProduk.forEach(({ id, nama, harga }) => {
+
+            const div = document.createElement("div");
+
+            div.classList.add("produk");
+
+            div.innerHTML = `
+                <div>
+                    <strong>${nama}</strong><br>
+                    Harga: Rp ${harga.toLocaleString("id-ID")}
+                </div>
+
+                <button class="hapus" onclick="hapusProduk(${id})">
+                    Hapus
+                </button>
+            `;
+
+            daftarProduk.appendChild(div);
+        });
+    }
+
+
+    // ==========================================
+    // 3. MENAMBAHKAN PRODUK
+    // ==========================================
+
+    function tambahProduk(nama, harga) {
+
+        const produkBaru = {
+            id: Date.now(),
+            nama,
+            harga
+        };
+
+        // Spread Operator
+        produk = [...produk, produkBaru];
+
+        tampilkanProduk(...produk);
+    }
+
+
+    // ==========================================
+    // 4. MENGHAPUS PRODUK
+    // ==========================================
+
+    function hapusProduk(id) {
+
+        produk = produk.filter(item => item.id !== id);
+
+        tampilkanProduk(...produk);
+    }
+
+
+    // ==========================================
+    // 5. EVENT LISTENER
+    // ==========================================
+
+    const tombolTambah = document.getElementById("btnTambah");
+
+    tombolTambah.addEventListener("click", function () {
+
+        const nama = document.getElementById("namaProduk").value;
+        const harga = Number(
+            document.getElementById("hargaProduk").value
+        );
+
+        if (nama === "" || harga <= 0) {
+            alert("Silakan isi nama dan harga produk dengan benar!");
+            return;
+        }
+
+        tambahProduk(nama, harga);
+
+        document.getElementById("namaProduk").value = "";
+        document.getElementById("hargaProduk").value = "";
+    });
+
+
+    // ==========================================
+    // 6. MENAMPILKAN DATA SAAT HALAMAN DIBUKA
+    // ==========================================
+
+    tampilkanProduk(...produk);
+
+</script>
+
+</body>
+</html>
+
